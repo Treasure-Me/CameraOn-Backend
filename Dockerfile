@@ -1,14 +1,13 @@
-# Step 1: Build the application using Maven
+# Step 1: Build
 FROM maven:3.9.6-eclipse-temurin-21 AS build
 COPY . .
 RUN mvn clean package -DskipTests
 
-# Step 2: Run the application using OpenJDK
+# Step 2: Run
 FROM eclipse-temurin:21-jre
-COPY --from=build /target/*.jar app.jar
+# Copy the final shaded jar
+COPY --from=build /target/Back-End.jar app.jar
 
-# Expose the port Javalin will run on
 EXPOSE 5000
-
-# Run the jar
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Add a flag to handle potential networking issues in containers
+ENTRYPOINT ["java", "-Djava.net.preferIPv4Stack=true", "-jar", "app.jar"]
