@@ -45,11 +45,13 @@ public class DatabaseConfig {
                Name TEXT NOT NULL,
                Venue TEXT,
                Service TEXT,
-               BOOKING_DATE TIMESTAMP,
-               BOOKED_DATE TIMESTAMP DEFAULT (CURRENT_TIMESTAMP + INTERVAL '2 hours')
+               BOOKING_START TIMESTAMP,
+               BOOKING_END TIMESTAMP,
+               BOOKED_DATE TIMESTAMP DEFAULT (CURRENT_TIMESTAMP + INTERVAL '2 hours'),
+               CONSTRAINT valid_time_range CHECK (BOOKING_END > BOOKING_START)
            );
            CREATE INDEX IF NOT EXISTS idx_venue ON Bookings(Venue);
-           CREATE INDEX IF NOT EXISTS idx_booking_date ON Bookings(BOOKING_DATE);
+           CREATE INDEX IF NOT EXISTS idx_booking_start ON Bookings(BOOKING_START);
         """;
 
         try (Statement statement = connection.createStatement()) {
