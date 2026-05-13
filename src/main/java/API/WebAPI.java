@@ -35,6 +35,7 @@ public class WebAPI {
         this.server.post("/api/logout", WebAPIHandler::logout);
         this.server.post("/api/create-account", WebAPIHandler::createAccount);
         this.server.get("/api/user", WebAPIHandler::getUserLoggedIn);
+        this.server.get("/api/places-search", WebAPIHandler::searchCustomStudio);
     }
 
     public static void main(String[] args) {
